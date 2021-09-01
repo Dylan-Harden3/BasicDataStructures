@@ -24,6 +24,7 @@ class DoublyLinkedList {
 	~DoublyLinkedList(){
 		Node<Object>* cur = head;
 		Node<Object>* nex = nullptr;
+		//traverse the list freeing the memory 
 		while(cur != nullptr){
 			nex = cur->next;
 			delete cur;
@@ -32,8 +33,10 @@ class DoublyLinkedList {
 	}
 	//copy constructor
 	DoublyLinkedList(const DoublyLinkedList& in) : head(nullptr){
+		//set the head equal to the other list's head
 		Node<Object>* temp = in.head;
 		while(temp!=nullptr){
+			//traverse the old list inserting the current data at the end of the new list
 			insertatend(temp->data);
 			temp=temp->next;
 		}
@@ -49,6 +52,7 @@ class DoublyLinkedList {
 		size_t c = 0;
 		  Node<Object>* cur = head;
 		while(cur != nullptr){
+			//traverse until you reach a null node and increment the counter each time to find the size
 			c++;
 			cur = cur->next;
 		}
@@ -67,21 +71,26 @@ class DoublyLinkedList {
 	}
 	//insert and remove functions
 	void insert(size_t index, const Object& d){
+		//check that the index is within range
 		if(index > this->size()  ||  index <0){
 			throw std::out_of_range("out of range");
 		}
+		//insert at the front
 		if(index == 0){
 			insertathead(d);
 			return;
-		}else if(index == this->size()){
+		}else if(index == this->size()){ //insert at the end
 			insertatend(d);
 			return;
 		}else {
 			Node<Object>* cur = head;
+			//traverse until the desired position
 			for(size_t i=0;i<index;i++){
 				cur = cur->next;
 			}
+			//make a new node
 			Node<Object>* n = new Node<Object>;
+			//update the pointers for the current node and the new node
 			n->data = d;
 			n->next = cur;
 			n->prev = cur->prev;
