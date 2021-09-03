@@ -15,7 +15,7 @@ template <typename Object>
 
 template <typename Object>
 class DoublyLinkedList {
-	//head
+	//head node
 	public:
 	Node<Object>* head;
 	//constructor
@@ -60,6 +60,7 @@ class DoublyLinkedList {
 	}
 	//[] operator
 	Object& operator[](size_t index){
+		//check that the index is valid
 		if(index >= this->size()  ||  index <0){
 			throw std::out_of_range("out of range");
 		}
@@ -69,7 +70,7 @@ class DoublyLinkedList {
 		}
 		return cur->data;
 	}
-	//insert and remove functions
+	//insert function
 	void insert(size_t index, const Object& d){
 		//check that the index is within range
 		if(index > this->size()  ||  index <0){
@@ -99,35 +100,45 @@ class DoublyLinkedList {
 			return;
 		}
 	}
+	//remove function
 	void remove(size_t index){
 		size_t c =0;
+		//check that the index is valid
 		if(index >= this->size()  ||  index <0){
 			throw std::out_of_range("out of range");
 		}
+		//if the head node is to be removed
 		if(index == 0){
+			//if there is only 1 node in the list then just delete the head
 			if(this->size() == 1){
 				delete head;
 				head = nullptr;
 			}else{
-				  Node<Object>* cur = head;
+				//if there is > 1 node then save the old head, update the head, and then delete the old head 
+				Node<Object>* cur = head;
 				head = head->next;
 				head->prev = nullptr;
 				delete cur;
 			}
+		//if the last node is to be removed 
 		}else if(index == this->size()-1){
-			  Node<Object>* cur = head;
+			//traverse until the end of the list is reached 
+			Node<Object>* cur = head;
 			while(cur->next != nullptr){
 				cur = cur->next;
 			}
-			  Node<Object>* pre = cur->prev;
+			//store the previous node and then delete the current (last) node
+			Node<Object>* pre = cur->prev;
 			pre->next = nullptr;
 			delete cur;
 		}else {
+			//traverse until the desired index is reached 
 			Node<Object>* cur = head;
 			while(c != index){
 				cur = cur->next;
 				c++;
 			}
+			//store the previous and next nodes, update there previous and next pointers, delete the current node 
 			Node<Object>* pre = cur->prev;
 			Node<Object>* nex = cur->next;
 			nex->prev = pre;
@@ -149,30 +160,37 @@ class DoublyLinkedList {
 	}
 	//helper functions to insert at the begging and end of the list
 	void insertathead(Object d) {
+		//make a new node with the specified data
 		Node<Object>* temp = new Node<Object>;
 		temp->data = d;
 		temp->prev = nullptr;
 		temp->next = nullptr;
+		//if the list is empty then set the head as the new node
 		if(head == nullptr){
 			head = temp;
 			return;
 		}
+		//if the list is not empty then update the current head's previous pointer, set the new nodes next pointer to the old head, set head as the new node
 		head->prev = temp;
 		temp->next = head;
 		head = temp;
 	}
 	void insertatend(Object d){
+		//make a new node with the specified data
 		Node<Object>* temp = new Node<Object>;
 		temp->data = d;
 		temp->prev = nullptr;
 		temp->next = nullptr;
+		//if the list is empty then set the head as the new node
 		if(head == nullptr){
 			head = temp;
 		}else {
+			//traverse until the end of the list
 			Node<Object>* cur = head;
 			while(cur->next != nullptr){
 				cur = cur->next;
 			}
+			//update the last nodes next pointer to the new node, set the new nodes previous pointer to the last node
 			cur->next = temp;
 			temp->prev = cur;
 		}

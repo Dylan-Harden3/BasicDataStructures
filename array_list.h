@@ -19,6 +19,7 @@ class ArrayList {
 	explicit ArrayList(size_t c):size_(0),capacity(c),arr(new Object[capacity]){}
 	//copy constructor
 	ArrayList(const ArrayList& input): size_(input.size_),capacity(input.capacity),arr(new Object[capacity]){
+		//allocate memory for the new array and then copy the old one into the new one
 		for(size_t i=0;i<size_;i++){
 			arr[i] = input.arr[i];
 		}
@@ -33,6 +34,7 @@ class ArrayList {
 			size_ = rhs.size_;
 			capacity = rhs.capacity;
 			delete [] arr;
+			//allocate memory for the new array and then copy the old one into the new one
 			arr = new Object[capacity];
 			for(size_t i=0;i<size_;i++){
 				arr[i] = rhs.arr[i];
@@ -51,11 +53,13 @@ class ArrayList {
 		}
 		return arr[index];
 	}
-	//insert and remove functions
+	//insert into the array at the desired index
 	void insert(size_t index, const Object& obj) {
+		//check that the index is valid
 		if(index>size_ || index < 0){
 			throw std::out_of_range("Out of range");
 		}
+		//if size == capacity then we double the capacity and re copy the array
 		if(size_==capacity){
 			Object* temp = new Object[capacity*2];
 			for(size_t i=0;i<size_;i++){
@@ -71,7 +75,9 @@ class ArrayList {
 		arr[index] = obj;
 		size_++;
 	}
+	//remove the element at the desired index
 	void remove(size_t index){
+		//check that the index is valid
 		if(index>=size_ || index < 0){
 			throw std::out_of_range("Out of range");
 		}

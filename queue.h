@@ -5,7 +5,6 @@
 #include <iostream>
 template <typename Object>
 class Queue {
-//yo
 	//size variable and arraylist to store the queue
 	public:
 	size_t size;
